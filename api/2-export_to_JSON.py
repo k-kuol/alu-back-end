@@ -12,7 +12,14 @@ if __name__ == "__main__":
     todos = requests.get("{}/todos?userId={}".format(base, user_id)).json()
 
     username = user.get("username")
-    data = {user_id: [{"task": t.get("title"), "completed": t.get("completed"),
-                        "username": username} for t in todos]}
+    tasks = [
+        {
+            "task": t.get("title"),
+            "completed": t.get("completed"),
+            "username": username,
+        }
+        for t in todos
+    ]
+    data = {user_id: tasks}
     with open("{}.json".format(user_id), "w") as f:
         json.dump(data, f)
